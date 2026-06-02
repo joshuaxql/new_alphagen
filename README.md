@@ -4,6 +4,25 @@
 
 ## 代码框架
 
+```text
+new_alphagen/
+├─ README.md              # 项目说明文档
+├─ requirements.txt       # Python 依赖
+├─ train.py               # 训练总入口
+├─ generator.py           # 生成器网络与 PPO / GRPO Agent
+├─ masking.py             # RPN 合法动作掩码与序列构建
+├─ tokens.py              # token、操作符、词表定义
+├─ expression.py          # 表达式树、RPN 解析与公式互转
+├─ calculator.py          # 因子计算、标准化与 IC 指标
+├─ combination.py         # Alpha 池维护与组合权重优化
+├─ reward.py              # 基础/增强奖励函数
+├─ reporting.py           # 训练评估、历史保存与可视化
+├─ backtest.py            # Top-k / Drop-n 回测
+├─ data.py                # A 股数据读取与过滤
+├─ common.py              # 公共路径与常量
+└─ config.py              # 训练/奖励默认配置
+```
+
 - `new_alphagen/train.py`：训练总入口。负责加载数据、采样表达式、计算奖励、更新策略网络，并在验证集/测试集上评估结果。
 - `new_alphagen/generator.py`：生成器与强化学习代理。`AlphaGenNet` 支持 `Transformer` 和 `LSTM` 两种结构，并实现了 `PPOAgent`、`GRPOAgent`。
 - `new_alphagen/tokens.py`、`expression.py`、`masking.py`：定义表达式 token、RPN 语法树解析和合法动作掩码，保证生成公式可解析、可执行。
