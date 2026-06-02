@@ -85,15 +85,11 @@ class EnhancedRewardCalculator:
         icir_reward = self.icir_weight * self._calculate_icir(
             candidate_ic, candidate_ic_std
         )
-        diversity_reward = self._calculate_diversity_reward(
-            candidate_ic, existing_ics
-        )
+        diversity_reward = self._calculate_diversity_reward(candidate_ic, existing_ics)
         complexity = self._calculate_complexity(token_ids, vocab)
         complexity_penalty = self._calculate_complexity_penalty(complexity)
 
-        total_reward = (
-            ic_reward + icir_reward + diversity_reward - complexity_penalty
-        )
+        total_reward = ic_reward + icir_reward + diversity_reward - complexity_penalty
         return RewardBreakdown(
             total_reward=total_reward,
             ic_reward=ic_reward,

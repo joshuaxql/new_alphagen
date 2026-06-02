@@ -238,17 +238,3 @@ class RPNBuilder:
                                 mask[idx] = True
 
         return mask
-
-
-if __name__ == "__main__":
-    from tokens import OP_ADD, OP_MEAN, OP_CORR
-
-    builder = RPNBuilder(max_len=20)
-    beg_idx = TOKEN_TO_IDX[Token(TokenType.BEG, BEG_TOKEN)]
-    builder.step(beg_idx)
-
-    m = builder.get_valid_mask()
-    valid_tokens = [VOCAB[i] for i in range(VOCAB_SIZE) if m[i]]
-    print(f"BEG 后合法动作 ({sum(m)} 个):")
-    for t in valid_tokens:
-        print(f"  {t}")

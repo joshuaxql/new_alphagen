@@ -102,7 +102,9 @@ class AlphaGenNet(nn.Module):
         """
         if self.model_type == "transformer":
             if context is None:
-                context = self.init_hidden(batch_size=token_idx.shape[0], device=token_idx.device)
+                context = self.init_hidden(
+                    batch_size=token_idx.shape[0], device=token_idx.device
+                )
             new_context = torch.cat([context, token_idx.unsqueeze(1)], dim=1)
             out = self._encode_transformer(new_context)
             h = out[:, -1, :]
@@ -142,10 +144,9 @@ class AlphaGenNet(nn.Module):
         x = self.embedding(token_ids) + self.pos_embedding(positions)
         causal_mask = self._build_causal_mask(max_len, token_ids.device)
         # padding mask：超出实际长度的位置设为 True（被忽略）
-        pad_mask = (
-            torch.arange(max_len, device=token_ids.device).unsqueeze(0)
-            >= lengths.to(token_ids.device).unsqueeze(1)
-        )
+        pad_mask = torch.arange(max_len, device=token_ids.device).unsqueeze(
+            0
+        ) >= lengths.to(token_ids.device).unsqueeze(1)
         out = self.transformer(x, mask=causal_mask, src_key_padding_mask=pad_mask)
         return self.policy_head(out), self.value_head(out).squeeze(-1)
 

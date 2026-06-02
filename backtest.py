@@ -1,7 +1,6 @@
 """
 回测引擎 — Top-k / Drop-n 交易策略
 
-论文 Section 4.4 + 作业要求:
   1. 每天对所有股票计算 alpha 分数
   2. 第一天等权买入 top-n 只
   3. 之后每天：卖出持仓中得分最低的 k 只，买入全市场得分最高的 k 只
@@ -97,7 +96,10 @@ class Backtester:
                     if len(holdings) >= self.n_hold:
                         break
                     idx = int(idx)
-                    if effective_pct_chg is not None and effective_pct_chg[t + 1, idx] >= 9.9:
+                    if (
+                        effective_pct_chg is not None
+                        and effective_pct_chg[t + 1, idx] >= 9.9
+                    ):
                         limit_hit_count += 1
                         continue
                     holdings.add(idx)
@@ -111,7 +113,10 @@ class Backtester:
 
                 actual_sells = []
                 for idx in to_sell_candidates:
-                    if effective_pct_chg is not None and effective_pct_chg[t + 1, idx] <= -9.9:
+                    if (
+                        effective_pct_chg is not None
+                        and effective_pct_chg[t + 1, idx] <= -9.9
+                    ):
                         limit_hit_count += 1
                     else:
                         holdings.discard(idx)
@@ -126,7 +131,10 @@ class Backtester:
                     idx = int(idx)
                     if idx in holdings:
                         continue
-                    if effective_pct_chg is not None and effective_pct_chg[t + 1, idx] >= 9.9:
+                    if (
+                        effective_pct_chg is not None
+                        and effective_pct_chg[t + 1, idx] >= 9.9
+                    ):
                         limit_hit_count += 1
                         continue
                     actual_buys.append(idx)
@@ -134,7 +142,9 @@ class Backtester:
 
                 n_sells = len(actual_sells)
                 n_buys = len(actual_buys)
-                trade_cost = (n_sells * self.commission + n_buys * self.commission * 1.5) / max(len(holdings), 1)
+                trade_cost = (
+                    n_sells * self.commission + n_buys * self.commission * 1.5
+                ) / max(len(holdings), 1)
 
             # 持仓收益：open[t+2] / open[t+1] - 1
             hold_list = list(holdings)
@@ -363,9 +373,7 @@ def main():
         sd.stock_codes,
         min_list_days=365,
     )
-    combo_alpha_for_backtest = np.where(
-        backtest_eligibility_mask, combo_alpha, np.nan
-    )
+    combo_alpha_for_backtest = np.where(backtest_eligibility_mask, combo_alpha, np.nan)
     result = bt.run(
         combo_alpha_for_backtest,
         warmup_context.official_open_prices(),

@@ -206,18 +206,3 @@ def build_token_vocabulary() -> List[Token]:
 VOCAB = build_token_vocabulary()
 TOKEN_TO_IDX = {tok: idx for idx, tok in enumerate(VOCAB)}
 VOCAB_SIZE = len(VOCAB)
-
-
-# ============================================================
-# 10. 测试/展示
-# ============================================================
-if __name__ == "__main__":
-    print(f"词表大小: {VOCAB_SIZE}")
-    print(f"\n所有Token:")
-    for idx, tok in enumerate(VOCAB):
-        print(f"  [{idx:2d}] {tok}")
-
-    print(f"\n操作符数量: {len(ALL_OPERATORS)}")
-    print(f"特征数量: {len(FEATURES)}")
-    print(f"常数数量: {len(CONSTANTS)}")
-    print(f"时间窗口数量: {len(TIME_DELTAS)}")

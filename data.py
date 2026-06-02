@@ -49,7 +49,9 @@ class Data:
                 eligible_dates.append(np.datetime64("NaT"))
             else:
                 eligible_dates.append(
-                    np.datetime64(pd.Timestamp(list_date) + pd.Timedelta(days=min_list_days))
+                    np.datetime64(
+                        pd.Timestamp(list_date) + pd.Timedelta(days=min_list_days)
+                    )
                 )
 
         trade_dates_np = np.array(pd.to_datetime(trade_dates), dtype="datetime64[D]")
@@ -211,16 +213,3 @@ class Data:
         ).dt.date
         market = market.sort_values("trade_date", kind="stable")
         return market.reset_index(drop=True)
-
-
-def main():
-    path = Path("./data")
-    reader = Data(path)
-    print(reader.basic().head())
-    print(reader.trade_cal().head())
-    print(reader.daily(start_date="20260501", end_date="20260508", adjust=ADJUST_PREV))
-    print(reader.market().head())
-
-
-if __name__ == "__main__":
-    main()
